@@ -2,6 +2,9 @@ package model.animal.components;
 
 import java.io.Serializable;
 
+/**
+ * Enum representing a more general category for an animal (class/order)
+ */
 public enum GeneralCategory implements Serializable {
     AQUATIC,
     BIRD,

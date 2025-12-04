@@ -1,0 +1,581 @@
+Animal Adoption System
+🐾 1. Overview
+In this project, you will build a full Animal Adoption System. Your program will let users:
+
+Create accounts
+
+Log in and out
+
+Adopt animals
+
+Interact with their pets
+
+Upgrade their account type
+
+Save and reload data between runs
+
+You will work with three inheritance hierarchies:
+
+model.animal (provided)
+
+model.user (you write)
+
+view (provided UI system)
+
+This assignment is designed to strengthen your understanding of inheritance, interfaces, enums, HashMaps, and clean project organization.
+
+2. Project Setup
+Create a new IntelliJ module called A12_AnimalAdoption.
+
+Place emojiAnimals.csv at the top project level.
+
+Import the provided .zip files and organize packages exactly like this:
+
+File
+emojiAnimals.csv
+File
+view.zip
+File
+animal.zip
+src
+├── controller
+├── model
+│      ├── animal (all provided in zip file)
+│      └── user (you implement)
+├── view (provided in zip file)
+The provided code includes:
+
+All animal classes (Animal, Pet, AnimalBot, enums, file reader, etc.)
+
+All view classes (UI, MyIO, PopupUI)
+
+Two controller classes (LoginMenu, UserDatabaseSaver)
+
+Your job is to write:
+
+All classes in model.user
+
+The full MainSystem controller
+
+3. Review the Provided Animal Code
+Your comments will be graded for demonstration of understanding
+
+Before coding anything, read and comment the files in model.animal
+
+Look over and COMMENT the code in model.animalin the following recommended order:
+
+🐝 AnimalCategory enum
+
+🦊 AnimalType Class (POJO - plain old Java Object)
+
+Notice the isReal is a boolean that is true for animals that will be Pet objects, and false for those that are AnimalBot objects
+
+takesWalks is a boolean for WalkablePet objects
+
+🗂️ AnimalFileReader (reads the csv file)
+
+🍓HungerLevel enum
+
+🐶 Animal (abstract class, POJO)
+
+🐱 Pet (concrete class, POJO)
+
+WalkablePet (concrete)
+
+🦄 AnimalBot (concrete class, POJO)
+
+Focus on:
+
+What each class stores
+
+How inheritance is structured
+
+How a Pet behaves vs an AnimalBot
+
+NOTE:  The view folder contains the UI interface, the MyIO version that implements the UI interface, and PopupUI which implements the UI interface. You do not need to comment this code, but note that by following LSP, you can swap input/output systems easily!
+
+4. Implementing the User Hierarchy (model.user)
+You will build three user types:
+
+FreeUser
+
+RegularUser
+
+PremiumUser (implements the Premium interface)
+
+Every user:
+
+Has a username and password
+
+Returns Strings instead of printing
+
+Uses the adopt method from the abstract parent class
+
+Notice: Throughout the model hierarchy, we will NOT be printing any messages, rather we will ALWAYS be returning Strings that can be displayed in the Main System through one of the concrete UI classes (IO or PopupUI). This is part of the logical separation of model and view: model defines classes and manages their data, view is the gateway for any kind of display.
+
+4.1 🧍🏻‍♂️User Class (abstract, implements Serializable)
+Implement:
+
+instance variables: String username (a constant) and String password
+
+constructors (full + copy)
+
+All POJO code
+
+toString: simple class name + userName
+
+equals/hashCode (username case-insensitive; password case-sensitive)
+
+NO accessor or mutator for password.  Instead you will have the following two methods:
+
+boolean verifyPassword(String passwordAttempt): check whether the given argument string matches the password saved for the particular user, return a boolean for the result
+
+boolean updatePassword(String password, String newPassword): check whether the string password matches the saved one for the user, and, if matches, update the password to newPassword and return true (otherwise return false
+
+abstract methods:
+
+public abstract int getNumAnimals();
+protected abstract String completeAdoption(Animal animal) ;
+public abstract String getAdoptionRules();
+protected abstract boolean canAdopt(Animal animal) ;
+public abstract String getAllInformation() ;
+final method (can't be overridden). It will call subclass abstract methods (using template design pattern)
+
+ public final String adopt(Animal animal){
+  String message;
+    if(canAdopt(animal)){
+       message = completeAdoption(animal);
+    }
+    else{
+      message = "Adoption is not allowed: " + getAdoptionRules();
+    }
+    return message;
+ }
+
+
+4.2 FreeUser
+Rules:
+
+Can adopt only one animal
+
+Must be a Pet (not AnimalBots)
+
+Implement:
+
+Pet myPet
+
+4 constructors (see UML), myPet is null until an animal has been adopted
+
+Add the getters and updated equals/hashCode methods.
+
+Note: getPet will return the myPet variable or null
+
+ Details for completing abstract methods:
+
+For getNumAnimals, return 0 is myPet is null, otherwise 1
+
+For getAdoptionRules, you can return a String like: "A FreeUser can only adopt one animal of type Pet (not Animal Bots). Upgrade to adopt more.", but feel free to add additional details or make the message more fun.
+
+For canAdopt, a FreeUser is only allowed to have one Pet, so this method returns true/false depending on whether or not myPet is null or not
+
+For completeAdoption, a String message is returned, based on whether the adoption is allowed
+
+if allowed, a String like "You have successfully adopted animal: " + animal.getFullName(); can be returned (or something more fun).
+
+ If not allowed, you can return the adoptionRules
+
+For getAllInformation, return the concatenation of the toString and, on a new line, tabbed in:
+
+ No pet has been adopted
+
+myPet's toString
+
+4.3 RegularUser
+Rules:
+
+Can adopt up to 5 animals, Store animals in a: Map<String, Animal> adoptedAnimals
+
+Can adopt both Pets and AnimalBots
+
+Implement:
+
+Instance variables: double subscriptionFee and a Map called adoptedAnimals with the animal's unique name as the key, and the animal object as the value
+
+constants: MAX_ANIMALS = 5, REGULAR_USER_FEE = 10.99
+
+6 constructors (see UML)
+
+Add the getters and updated equals/hashCode methods.
+
+getAnimalByName will return the Animal with the unique name provided or null if no Animal has that name
+
+getAllAnimalNames aka getAllNameswill return all the pet names, stored in an array. (Either method name is okay, just be consistent in your code.)
+
+ Details for overriding abstract methods:
+
+For getNumAnimals, return number of animals stored in the map
+
+For getAdoptionRules,you can return a String like: "A RegularUser can adopt up to 5 animals, upgrade to adopt more.", but feel free to add additional details or make the message more fun.
+
+For canAdopt, a RegularUser is allowed to have 5 animals (Pet or AnimalBot), so this method returns true/false depending on whether that still have space or not.
+
+For completeAdoption, a String message is returned, based on whether the adoption is allowed
+
+if allowed, a String like "You have successfully adopted animal: " + animal.getFullName(); can be returned (or something more fun).
+
+ If not allowed, you can return the adoptionRules
+
+For getAllInformation, return the concatenation of the toString and, on a new line, tabbed in:
+
+ You have not yet adopted any pets
+
+each of the pet's toString, on their own lines
+
+4.4 Premium (interface)
+The Premium interface is currently only used in this hierarchy, but a future implementation might allow other classes to implement Premium
+
+Two methods:
+
+isPremium()
+getPremiumFee()
+4.5 PremiumUser Extends RegularUser + implements Premium interface.
+Rules:
+
+Unlimited adoptions
+
+Premium fee: 25.99
+
+Implement:
+
+constants: PREMIUM_USER_FEE= 25.99
+
+3 Constructors (see UML)
+
+ Details for overriding abstract methods:
+
+isPremium will return true
+
+getPremiumFee will return the class constant.
+
+getAdoptionRules: will return "A PremiumUser can adopt as many animals as they like." (or another custom message of your choice)
+
+canAdopt: will always return true
+
+Notice because there are no new instance variables, equals/hashCode do not need to be overridden here. That is, PremiumUsers are evaluated for equality as RegularUsers.
+
+5. Controller Package
+The controller package will contain:
+
+LoginMenu (provided)
+
+123456789101112131415
+public enum LoginMenu {
+    CREATE_ACCOUNT("Create an account"),
+    LOGIN("Login"),
+    LOGOUT("Logout"),
+    CHANGE_PASSWORD("Change password"),
+    SHOW_USERNAMES("Display all usernames"),
+    DISPLAY_USERS("Display all user details"),
+
+    ADOPT_PET("Adopt a pet (requires login)"),
+    DISPLAY_USER("Display current user and their pets (requires login)"),
+    INTERACT_WITH_PET("Interact with an adopted pet (requires login)"),
+    UPGRADE_ACCOUNT("Upgrade account type"),
+    QUIT("Quit");
+
+    private final String option;
+
+    LoginMenu(String description) {
+        this.option = description;
+    }
+
+    @Override
+    public String toString() {
+        return option;
+    }
+}
+UserDatabaseSaver (provided) -  Completed for you - this class will manage the saving of the HashMap<String, User>.
+
+123456789101112131415
+
+import model.user.User;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+
+public class UserDatabaseSaver {
+    public static Map<String, User> readInDatabaseFromFile(String filename) {
+
+        Map<String, User> db = new HashMap<>();
+        try (FileInputStream fs = new FileInputStream(filename);
+             ObjectInputStream os = new ObjectInputStream(fs)){
+            Object o = os.readObject();
+            if(o instanceof Map) {
+                db = (Map<String, User> )o; //cast
+            }
+        } catch (Exception e) {
+            //can ignore exception if no file found
+           // System.err.println("Error caught in readInDatabaseFromFile: " + e);
+        }
+
+        if(db == null) {
+            System.out.println("No database file to be read, will need to create new empty database :-(");
+            db = new HashMap<>(); //make an empty database instead of having a null
+        }
+
+        return db;
+    }
+    public static void writeObjectToFile(Map<String, User> thing, String fileName) {
+        //for this to work, the thing  MUST (implement) Serializable, which means it can be written to a file
+        // anything with a Scanner or BFF as instance variable can not be serializable.
+
+        System.out.println("** demo serializable. which is basically writing data to machine-readable data");
+
+        try (FileOutputStream fs = new FileOutputStream(fileName)){
+            System.out.println("\t writing to file: " + fileName); //message
+            ObjectOutputStream os = new ObjectOutputStream(fs);
+            os.writeObject(thing); //write the thing to a file in a machine-readable way
+            os.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+}
+
+MainSystem (you create)
+
+6. MainSystem Implementation
+User objects will be used within MainSystem, where they will be stored in a HashMap , with the String userName as the key, and the User object as the value associated with that key
+
+Variables:
+
+private Map<String, User> userDatabase; //String is the unique username
+private List<AnimalType> allAnimals;
+private User loggedInUser; //null when no User is logged in
+private UI ui;
+
+private static final String DB_FILE = "userDatabase.ser";
+Default Constructor - Initialize all the instance variables.
+
+Initialize the UI implementation (console or pop-up version)
+
+If using PopUpUI, set a title to be used in the dialog windows.
+
+Load saved users using UserDatabaseSaver.readInDatabaseFromFile
+
+ This function which will either return an empty HashMap or a HashMap of the emails and users (if any were created in a previous run of the program)
+
+Here is my userDatabase.ser - but if doesn't work, it should create an empty map.
+
+File
+userDatabase.ser
+Load animals using AnimalFileReader.readEmojiAnimalFile();for ease of the program we assume all Pets and AnimalBots can be instantly created when a User wants to adopt an Animal
+
+ loggedInUser will start as null
+
+7. Main System Features to Implement
+7.0 main and run methods (provided)
+123456789101112131415
+public static void main(String[] args){
+    MainSystem program = new MainSystem();
+    program.run();
+}
+public void run() {
+        boolean quit = false;
+        while (!quit) {
+             LoginMenu option = (LoginMenu) ui.chooseFrom("Pick menu option: ", (Object[])LoginMenu.values());
+            switch (option) {
+                case LOGIN -> login();
+                case LOGOUT -> loggedInUser = null;
+                case SHOW_USERNAMES -> displayUsernames();
+                case DISPLAY_USERS -> displayUsers();
+                case CREATE_ACCOUNT -> createAccount();
+                case CHANGE_PASSWORD -> {
+                    if (isUserLoggedIn()) {
+                        changePassword(); }
+                }
+                case ADOPT_PET -> {
+                    if (isUserLoggedIn()) {
+                        adoptPet();
+                    }
+                }
+                case INTERACT_WITH_PET -> {
+                    if (isUserLoggedIn()) {
+                        interactWithPet();
+                    }
+                }
+                case DISPLAY_USER -> {
+                    ui.println(loggedInUser.getAllInformation());
+                }
+                case UPGRADE_ACCOUNT -> {
+                    if (isUserLoggedIn()) {
+                        upgrade();
+                    }
+                }
+                case QUIT ->{
+                    quit = true;
+                    UserDatabaseSaver.writeObjectToFile(userDatabase, DB_FILE);
+                }
+
+            }
+            if (!quit) { //pause
+                if(ui instanceof MyIO) ui.readln("enter something to continue");
+            }
+        }
+    }
+Remember that typically your methods should all fit on ONE screen, which means that you should break large tasks into several smaller ones. This helps with debugging and usually helps adhere to the DRY principle. Notice that createAcount and login both require getting a username and seeing if it exists in the map (database) -- so that is a great candidate for a helper method.
+
+7.1 Account creation
+Steps:
+
+Prompt for username. Ensure it’s not blank and not already taken
+
+If there is not already a user with that name, create account. Prompt for password, and confirm password.
+
+If passwords match, Ask for account type (Free, Regular, Premium), create the corresponding account type (for accounts with fees, make the user type yes to pay the fee), add the new user to the userDatabase map and set the loggedInUser to the new account holder. Display a message indicating successful creation of new user
+
+If passwords don't match, display a message that account wasn't created due to passwords not matching. (Optionally: you can enter a loop and give the user 3 tries to match password.
+
+If there is a user with that username, determine if the user wants to create a new account with a different username or login to an existing account.
+
+usernames (as keys) must be unique, so if the user is creating account, they must choose something unique in the system.
+
+7.2 Login / Logout
+Login is allowed if the loggedInUser is null (otherwise logout should occur first.) Input the username, find the corresponding user (if it exists), ask for password and verify it. If password matches, set the instance variable loggedInUser to that user object. Print a message that indicates what happened:
+
+User is logged in
+
+User was not found in the system
+
+Password didn't match.
+
+Logout : just set the loggedInUser object back to null
+
+7.3 Change password
+User must be logged in
+
+Verify old password
+
+Update to new password - print message if successful or not
+
+7.4 Display all usernames
+These are the keys in the userDatabase - use a String to accumulate the information so that it can be displayed all at once by the ui. Have a header (like "ALL USERS") followed by newline, and then either "No users currently registered" or a counter and username, each on their own line. (Hint: use a for each loop and the keySet() method.)
+
+ALL USERS:
+1: kendra
+2:  sample
+7.5 Display all user objects
+will involve getting the Collection of all values and accumulating the information so that it can be displayed by the ui. Like the above method, but will show the user object's toString result (Hint: use for-each and the values() method).
+
+7.6 Quit
+gracefully exit the program. Before ending, call this function in order to save the users and animals : UserDatabaseSaver.writeObjectToFile(userDatabase, DB_FILE);
+
+8. Adopt a Pet (requires login)
+Process:
+
+Choose category
+
+If category list is too long (> 10), offer additional filtering.
+
+My version asked about  wanting typical versus exotic pets, where typical meant isPet == true and exotic meant isPet == false, but you may change the wording to be more clear about canBePet  or choose to filter on takesWalk or another property.
+
+Ask for animal name
+
+Create Pet or AnimalBot
+
+Call loggedInUser.adopt
+
+Display the message the method returns
+
+
+Click expand to see longer detailed notes about adoption:
+
+
+Expand
+
+9. Display Pets and Interacting with Pets
+Display current user and their pets: Call the getAllInformation() method for the loggedInUser and display the results
+
+Interact with Pet:
+
+Selection of pet:
+
+If the user doesn't have any pets to interact with, display message that tells them that.
+
+If the user only has one pet, get that Animal
+
+If user has multiple pets, display the petNames and have the user select by name which pet to interact with.
+
+Loop to interact with Pet (until user says no to keep interacting)
+
+String[] options = {"Speak", "Feed", "Play", "Have Birthday", "Get Happiness", "Hungry?", "Show all data", "walk"};
+Present above options and allow user to select the option for the pet.
+
+Speak: print the result of Animal's makeSound method
+
+Feed: if Animal is a Pet, get the type of food (a String) to feed the Pet, and then display the result of calling the Pet's feed method.
+
+If Animal is a VirtualPet, display message that says something like Virtual pets can't eat food
+
+Play: print the result of Animal's play method
+
+Walk: if Animal is Walkable, ask for how long, then call takeWalk method and print a message about taking a walk, otherwise print a message that chosen animal can't go for walks.
+
+Have Birthday: call Animal's growOlder method and print a message that says "Happy Xth Birthday <Name>"
+
+Hungry?: if Animal is a Pet, display message "<Name> says <Result of getHungerMessage>"
+
+If Animal is a VirtualPet, display message that says something like Virtual pets don't experience hunger
+
+Show all data: print the result of the Animal's getAllData method
+
+10. Upgrade Account
+Rules:
+
+FreeUser → may upgrade to Regular or Premium
+
+RegularUser → may upgrade to Premium
+
+Must confirm payment
+
+Use a copy constructor that preserves existing animals
+
+Replace the old user in the HashMap
+
+Update loggedInUser to the new upgraded object
+
+
+12. Rubric (20 points)
+Comments on model.animal (1 pt)
+
+User class (3 pts)
+
+FreeUser (1 pt)
+
+RegularUser (2 pts)
+
+PremiumUser (1 pt)
+
+Premium interface (1 pt)
+
+MainSystem constructor & variables (1 pt)
+
+Account creation & login (2 pts)
+
+Display usernames/users (2 pts)
+
+adoptPet (2 pts)
+
+Interact with pet (2 pts)
+
+Upgrade account (1 pt)
+
+Overall (1 pt)
+
