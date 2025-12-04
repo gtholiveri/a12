@@ -1,0 +1,86 @@
+SpecificType,GeneralCategory,Emoji,canBePet,(for Pet)Sound, (for Pet)walkable
+Turtle,aquatic,🐢,yes,grunt,true
+SpoutingWhale,aquatic,🐳,no
+Whale,aquatic,🐋,no
+Fish,aquatic,🐟,yes,gurgle
+Octopus,aquatic,🐙,no
+Shark,aquatic,🦈,no
+Swan,bird,🦢,no
+TropicalFish,aquatic,🐠,yes,gurgle
+Seal,aquatic,🦭,no
+Dolphin,aquatic,🐬,no
+Frog,aquatic,🐸,yes,ribbit
+BabyChick,bird,🐤,yes,cheep-cheep
+BabyDuck,bird,🐥,no
+Bird,bird,🐦,yes,tweet-tweet
+Chicken,bird,🐔,yes,cluck-cluck
+Dodo,bird,🦤,no
+Dove,bird,🕊️,no
+Duck,bird,🦆,no
+Eagle,bird,🦅,no
+Flamingo,bird,🦩,no
+Owl,bird,🦉,yes,hoot hoot
+Parrot,bird,🦜,yes,polly wants a cracker
+Peacock,bird,🦚,no
+Penguin,bird,🐧,no
+Rooster,bird,🐓,yes,cock a doodle do
+Turkey,bird,🦃,yes,gobble gobble
+Dragon,imaginary,🐉,no
+DragonFace,imaginary,🐲,no
+Unicorn,imaginary,🦄,no
+Ant,insect,🐜,no
+Beetle,insect,🪲,no
+Bug,insect,🐛,no
+Butterfly,insect,🦋,no
+Cockroach,insect,🪳,no
+Cricket,insect,🦗,no
+Fly,insect,🪰,no
+Honeybee,insect,🐝,no
+LadyBeetle,insect,🐞,no
+Scorpion,insect,🦂,no
+Snail,insect,🐌,no
+Spider,insect,🕷️,no
+Worm,insect,🪱,no
+Mouse,mammal,🐭,yes,squeak
+Badger,mammal,🦡,no
+Bat,mammal,🦇,no
+Bear,mammal,🐻,no
+Beaver,mammal,🦫,no
+BlackCat,mammal,🐈‍⬛,yes,meow,true
+Camel,mammal,🐪,no
+Cat,mammal,🐈,yes,meow,true
+Chipmunk,mammal,🐿️,no
+Cow,mammal,🐄,yes,moo moo,true
+Deer,mammal,🦌,no
+Dog,mammal,🐕,yes,woof woof,true
+Elephant,mammal,🐘,no
+Ewe,mammal,🐑,yes,baaahhh,true
+Fox,mammal,🦊,no
+Giraffe,mammal,🦒,no
+Goat,mammal,🐐,yes,bleeehhh,true
+Gorilla,mammal,🦍,no
+Hamster,mammal,🐹,yes,squeak and rattle the wheel
+Hedgehog,mammal,🦔,yes,peep
+Hippopotamus,mammal,🦛,no
+Horse,mammal,🐎,yes,neigh,true
+Kangaroo,mammal,🦘,no
+Koala,mammal,🐨,no
+Leopard,mammal,🐆,no
+Lion,mammal,🦁,no
+Llama,mammal,🦙,no
+Monkey,mammal,🐒,no
+Mouse,mammal,🐁,yes,squeak
+Orangutan,mammal,🦧,no
+Otter,mammal,🦦,no
+Panda,mammal,🐼,no
+Pig,mammal,🐖,yes,oink oink
+Poodle,mammal,🐩,yes,bark
+Rabbit,mammal,🐇,yes,noise twitches
+Rhinoceros,mammal,🦏,no
+Sloth,mammal,🦥,no
+Tiger,mammal,🐅,no
+Wolf,mammal,🐺,no
+Zebra,mammal,🦓,no
+Crocodile,reptile,🐊,no
+Lizard,reptile,🦎,yes,hiss
+Snake,reptile,🐍,yes,hisssss
