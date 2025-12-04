@@ -20,9 +20,11 @@ public class AnimalFileReader {
 
     private static final String FILE_NAME_SIMPLE = "src/main/resources/emojiAnimals.csv";
 
+    /**
+     * @return An ArrayList containing all parsed AnimalDefinitions found in the source file
+     */
     public static ArrayList<AnimalDefinition> readEmojiAnimalFile() {
         ArrayList<AnimalDefinition> data = new ArrayList<>();
-        boolean finished = false;
         try (FileInputStream fis = new FileInputStream(FILE_NAME_SIMPLE);
              Scanner scan = new Scanner(fis)) {
             scan.nextLine(); // skip the header
@@ -62,9 +64,11 @@ public class AnimalFileReader {
         String sound = "";
         boolean walkable = false;
         if (pet.equalsIgnoreCase("yes")) {
+            // if it's a pet, set isPet to true and get the sound
             isPet = true;
-            sound = ls.next(); // all pets have sounds.
-            if (ls.hasNext()) { // after sound, there might be the word true for walkable.
+            sound = ls.next();
+            if (ls.hasNext()) {
+                // if there's something after the isPet, it's walkable
                 walkable = true;
             }
         }

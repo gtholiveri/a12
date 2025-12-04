@@ -1,6 +1,8 @@
 package model.animal.components;
 
 
+import java.io.Serializable;
+
 /**
  * An AnimalDefinition is a schema for a particular type of animal. It defines the unchanging / immutable qualities of
  * an animal (in contrast to things that are mutable / vary from specific to specific animal, like name, age, or happiness)
@@ -9,7 +11,6 @@ package model.animal.components;
  * @param specificType The more specific specificType (ex: whale, gorilla, dog)
  * @param emoji The emoji for this AnimalType
  * @param sound String with the sound for this AnimalType
- * @param isReal true if the Animal is real (like a fish) and false if it's not (like a unicorn)
  * @param takesWalks true if the animal is walkable and false if it's not
  */
 public record AnimalDefinition(
@@ -17,9 +18,9 @@ public record AnimalDefinition(
         String specificType,
         String emoji,
         String sound,
-        boolean isReal,
+        boolean isPet,
         boolean takesWalks
-        ) {
+        ) implements Serializable {
 
     //<editor-fold> desc="Comparison"
 
@@ -44,7 +45,6 @@ public record AnimalDefinition(
                 this.specificType.equals(that.specificType) &&
                 this.emoji.equals(that.emoji) &&
                 this.sound.equals(that.sound) &&
-                this.isReal == that.isReal &&
                 this.takesWalks == that.takesWalks;
     }
 
@@ -53,7 +53,6 @@ public record AnimalDefinition(
         int result = specificType.hashCode();
         result = 31 * result + category.hashCode();
         result = 31 * result + emoji.hashCode();
-        result = 31 * result + (isReal ? 1 : 0);
         result = 31 * result + sound.hashCode();
         return result;
     }

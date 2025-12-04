@@ -32,6 +32,7 @@ public interface UI {
     String readln(String prompt);
     String readln(String prompt, String... matches);
     Object chooseFrom(String prompt, Object... options);
+    String readLnNotEmpty(String prompt);
 
     // Date input
     LocalDate readDate(String prompt);

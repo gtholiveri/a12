@@ -11,12 +11,22 @@ public class Pet extends Animal {
 
     private String sound;
 
+    //<editor-fold> desc="Constructors"
+
     /**
      * Full constructor
      */
     public Pet(String name, AnimalDefinition type, int happiness, int age, int hungerVal) {
         super(name, type, happiness, age);
         setPetVariables(hungerVal);
+    }
+
+    /**
+     * Creates an Animal using a definition and name, and gives it random starting hunger on [0, 10]
+     */
+    public Pet(String name, AnimalDefinition def) {
+        super(name, def);
+        setPetVariables();
     }
 
     /**
@@ -35,14 +45,7 @@ public class Pet extends Animal {
         setPetVariables();
     }
 
-    /**
-     * Creates an Animal using a definition and name, and gives it a random starting hunger on [0, 10]
-     */
-    public Pet(String name, AnimalDefinition def) {
-        super(name, def);
-        setPetVariables();
-    }
-
+    //</editor-fold>
 
     //<editor-fold> desc="Getters"
 
@@ -76,6 +79,9 @@ public class Pet extends Animal {
         this.hungerVal = Math.clamp(hungerVal, 0, 10);
     }
 
+    public void increaseHungerLevel() {
+        setHungerVal(hungerVal + 1);
+    }
     //</editor-fold>
 
     //<editor-fold> desc="Actions"
@@ -89,7 +95,8 @@ public class Pet extends Animal {
      * @return A message with the pet's response
      */
     public String feed(String foodType) {
-        String message = this.getFullName() + " \" says:\" ";
+        increaseHungerLevel();
+        String message = this.getTitle() + " \" says:\" ";
 
         HungerLevel lvl = HungerLevel.getHungerLevel(this.hungerVal);
         if (lvl == HungerLevel.HUNGRY) {
@@ -101,7 +108,7 @@ public class Pet extends Animal {
             decreaseHappiness((int) (Math.random() * 5) + 1);
             message += " I was already full, giving me " + foodType + " made me feel sick. Happiness level is now: " + getHappiness();
         } else {
-            message = this.getFullName() + " rejected the food because they had an UNKNOWN hunger level";
+            message = this.getTitle() + " rejected the food because they had an UNKNOWN hunger level";
         }
         return message;
     }
@@ -109,7 +116,7 @@ public class Pet extends Animal {
 
     @Override
     public String makeSound() {
-        return getFullName() + " says: " + sound;
+        return getTitle() + " says: " + sound;
     }
 
     //</editor-fold>

@@ -6,7 +6,14 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class UserDatabaseSaver {
+    public static final String DB_FILE = "src/main/resources/userDatabase.ser";
+
+    public static Map<String, User> readInDatabase() {
+        return readInDatabaseFromFile(DB_FILE);
+    }
+
     public static Map<String, User> readInDatabaseFromFile(String filename) {
 
         Map<String, User> db = new HashMap<>();
@@ -29,10 +36,8 @@ public class UserDatabaseSaver {
         return db;
     }
     public static void writeObjectToFile(Map<String, User> thing, String fileName) {
-        //for this to work, the thing  MUST (implement) Serializable, which means it can be written to a file
+        //for this to work, the thing MUST (implement) Serializable, which means it can be written to a file
         // anything with a Scanner or BFF as instance variable can not be serializable.
-
-        System.out.println("** demo serializable. which is basically writing data to machine-readable data");
 
         try (FileOutputStream fs = new FileOutputStream(fileName)){
             System.out.println("\t writing to file: " + fileName); //message
@@ -40,12 +45,10 @@ public class UserDatabaseSaver {
             os.writeObject(thing); //write the thing to a file in a machine-readable way
             os.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println("Error: Could not find file " + fileName);
         }
         catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.err.println("Error: Could not write to file " + fileName + ". Error: " + e.getMessage());
         }
     }
 

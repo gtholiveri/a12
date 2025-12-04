@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
 
+import static util.ArrUtils.arrContains;
+
 /**
  * MyIO -- a small input/output helper that wraps Scanner
  * and does robust error checking for user input.
@@ -35,6 +37,18 @@ public class TerminalUI implements UI {
     public String readln(String prompt) {
         print(prompt + " > ");
         return sc.nextLine();
+    }
+
+    public String readLnNotEmpty(String prompt) {
+        while (true) {
+            String response = readln(prompt).trim();
+
+            if (!response.isEmpty()) {
+                return response;
+            } else {
+                System.err.println("Response cannot be empty. Try again.");
+            }
+        }
     }
 
     /**

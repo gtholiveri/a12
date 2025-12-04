@@ -107,7 +107,7 @@ public abstract class Animal implements Serializable {
     /**
      * @return Full name for display
      */
-    public String getFullName() {
+    public String getTitle() {
         return name + " the " + def.specificType() + " " + def.emoji();
 
     }
@@ -118,7 +118,7 @@ public abstract class Animal implements Serializable {
      */
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " " + getFullName();
+        return getClass().getSimpleName() + " " + getTitle();
     }
 
     /**

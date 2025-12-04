@@ -1,5 +1,5 @@
 package controller;
-public enum LoginMenu {
+public enum AllMenuOptions {
     CREATE_ACCOUNT("Create an account"),
     LOGIN("Login"),
     LOGOUT("Logout"),
@@ -15,7 +15,7 @@ public enum LoginMenu {
 
     private final String option;
 
-    LoginMenu(String description) {
+    AllMenuOptions(String description) {
         this.option = description;
     }
 

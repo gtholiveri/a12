@@ -61,6 +61,14 @@ public class PopupUI implements UI{
                 icon, matches, matches[0]);
     }
 
+    public String readLnNotEmpty(String prompt) {
+        String response = readln(prompt);
+        while (response.isEmpty()) {
+            response = readln(prompt);
+        }
+        return response;
+    }
+
 
 
     public int readInt(String prompt) {

@@ -82,4 +82,24 @@ public class StringUtils {
     public static String fDouble(double val1, double val2) {
         return String.format("%-4.1f / %-4.1f", val1, val2);
     }
+
+    /**
+     * Returns the ordinal suffix for a given number (1st, 2nd, 3rd, 4th, etc.)
+     * @param num The number to get the ordinal suffix for
+     * @return The ordinal suffix ("st", "nd", "rd", or "th")
+     */
+    public static String getOrdinalSuffix(int num) {
+        // Handle special cases: 11th, 12th, 13th
+        if (num % 100 >= 11 && num % 100 <= 13) {
+            return "th";
+        }
+
+        // Handle standard cases based on last digit
+        return switch (num % 10) {
+            case 1 -> "st";
+            case 2 -> "nd";
+            case 3 -> "rd";
+            default -> "th";
+        };
+    }
 }

@@ -20,10 +20,10 @@ public class FreeUser extends User {
         this.myPet = myPet;
     }
 
-    // Constructor 3: copy constructor
-    public FreeUser(FreeUser other) {
+    // Constructor 3: copy from User with Pet
+    public FreeUser(User other, Pet myPet) {
         super(other);
-        this.myPet = other.myPet;
+        this.myPet = myPet;
     }
 
     // Constructor 4: copy from User
@@ -56,7 +56,7 @@ public class FreeUser extends User {
     protected String completeAdoption(Animal animal) {
         if (canAdopt(animal)) {
             this.myPet = (Pet) animal;
-            return "You have successfully adopted animal: " + animal.getFullName();
+            return "You have successfully adopted animal: " + animal.getTitle();
         }
         return getAdoptionRules();
     }

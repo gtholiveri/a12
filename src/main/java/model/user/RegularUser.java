@@ -1,6 +1,7 @@
 package model.user;
 
 import model.animal.Animal;
+import model.animal.Pet;
 
 import java.util.*;
 
@@ -11,53 +12,74 @@ public class RegularUser extends User {
     private Map<String, Animal> adoptedAnimals;
     private double subscriptionFee;
 
-    // Constructor 1: username and password
+    /**
+     * Specified fee, empty starting animal map
+     * @param user Copies their username and password
+     */
+    public RegularUser(User user, double subscriptionFee) {
+        super(user);
+        this.adoptedAnimals = new HashMap<>();
+        this.subscriptionFee = subscriptionFee;
+    }
+
+    /**
+     * Most default constructor: default fee, empty starting animal map
+     */
     public RegularUser(String username, String password) {
         super(username, password);
         this.adoptedAnimals = new HashMap<>();
         this.subscriptionFee = REGULAR_USER_FEE;
     }
 
-    // Constructor 2: username, password, and fee
-    public RegularUser(String username, String password, double subscriptionFee) {
-        super(username, password);
-        this.adoptedAnimals = new HashMap<>();
+    /**
+     * Specified starting animal map and fee
+     * @param user Copies their username and password
+     */
+    public RegularUser(User user, Map<String, Animal> adoptedAnimals, double subscriptionFee) {
+        super(user);
+        this.adoptedAnimals = new HashMap<>(adoptedAnimals);
         this.subscriptionFee = subscriptionFee;
     }
 
-    // Constructor 3: username, password, and map
+    /**
+     * Everything specified except fee
+     */
     public RegularUser(String username, String password, Map<String, Animal> adoptedAnimals) {
         super(username, password);
         this.adoptedAnimals = new HashMap<>(adoptedAnimals);
         this.subscriptionFee = REGULAR_USER_FEE;
     }
 
-    // Constructor 4: username, password, fee, and map
-    public RegularUser(String username, String password, double subscriptionFee, Map<String, Animal> adoptedAnimals) {
+    /**
+     * Full constructor, all fields specified
+     */
+    public RegularUser(String username, String password, Map<String, Animal> adoptedAnimals, double subscriptionFee) {
         super(username, password);
         this.adoptedAnimals = new HashMap<>(adoptedAnimals);
         this.subscriptionFee = subscriptionFee;
     }
 
-    // Constructor 5: copy constructor
-    public RegularUser(RegularUser other) {
-        super(other);
-        this.adoptedAnimals = new HashMap<>(other.adoptedAnimals);
-        this.subscriptionFee = other.subscriptionFee;
-    }
-
-    // Constructor 6: upgrade from FreeUser
-    public RegularUser(FreeUser other) {
+    // Constructor 6: Copy from User (upgrade/copy constructor)
+    public RegularUser(User other) {
         super(other);
         this.adoptedAnimals = new HashMap<>();
         this.subscriptionFee = REGULAR_USER_FEE;
-        // Transfer the single pet if they have one
-        if (other.getPet() != null) {
-            this.adoptedAnimals.put(other.getPet().getUniqueName(), other.getPet());
+
+        // Transfer animals based on the type of user
+        if (other instanceof RegularUser o) {
+            // Copy from RegularUser or PremiumUser (both have adoptedAnimals)
+            Map<String, Animal> incomingAnimals = o.getAdoptedAnimals();
+            this.adoptedAnimals.putAll(incomingAnimals);
+        } else if (other instanceof FreeUser) {
+            // Transfer single pet from FreeUser
+            Pet pet = ((FreeUser) other).getPet();
+            if (pet != null) {
+                this.adoptedAnimals.put(pet.getTitle(), pet);
+            }
         }
     }
 
-    // Getters
+    //<editor-fold> desc="Getters"
     public Map<String, Animal> getAdoptedAnimals() {
         return adoptedAnimals;
     }
@@ -84,16 +106,19 @@ public class RegularUser extends User {
         return "A RegularUser can adopt up to 5 animals. Upgrade to adopt more.";
     }
 
+
     @Override
     protected boolean canAdopt(Animal animal) {
         return adoptedAnimals.size() < MAX_ANIMALS;
     }
+    //</editor-fold>
+
 
     @Override
     protected String completeAdoption(Animal animal) {
         if (canAdopt(animal)) {
-            adoptedAnimals.put(animal.getUniqueName(), animal);
-            return "You have successfully adopted animal: " + animal.getFullName();
+            adoptedAnimals.put(animal.getTitle(), animal);
+            return "You have successfully adopted animal: " + animal.getTitle();
         }
         return getAdoptionRules();
     }
@@ -112,6 +137,8 @@ public class RegularUser extends User {
         return sb.toString();
     }
 
+    //<editor-fold> desc="Comparison"
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -125,4 +152,6 @@ public class RegularUser extends User {
     public int hashCode() {
         return Objects.hash(super.hashCode(), adoptedAnimals, subscriptionFee);
     }
+
+    //</editor-fold>
 }
